@@ -117,8 +117,6 @@ router.route("/addusers")
                 res.status(400).json(result);
             }
 
-
-
     });
 
 
@@ -146,6 +144,8 @@ router.route("/update/:id")
     .post(function(req,res){
 
         var response = {};
+        var mileage;
+        var first_registration;
 
         var input = req.body;
         var v = new Validator();
@@ -171,6 +171,8 @@ router.route("/update/:id")
             
 
             mongoOp.findByIdAndUpdate(req.params.id,input,function(err,data){
+            mileage = data.mileage
+            first_registration = data.first_registration
 
 
             // Mongo command to fetch all data from collection.
@@ -185,24 +187,20 @@ router.route("/update/:id")
             });
 
 
-            // if (input.new){
-            //     mongoOp.findByIdAndUpdate(req.params.id,{$unset:{mileage:"",first_registration:""}},function(err,data){
+            if (input.new && (mileage !== null) && (first_registration!== null)){
+                mongoOp.findByIdAndUpdate(req.params.id,{$unset:{mileage:"",first_registration:""}},function(err,data){
 
 
-            //     // Mongo command to fetch all data from collection.
-            //     if(err) {
-            //         response = {"error" : true, "message" : "wrong input"};
-            //     } else {
-            //         response = {"error" : false,"message" : "Remove mileage and first_registration"};
-            //         console.log(data);
-            //     }
-            //     res.json(response);
-                 
-            //     });
+                // Mongo command to fetch all data from collection.
+                if(err) {
+                    response = {"error" : true, "message" : "wrong input"};
+                } else {
+                    response = {"error" : false,"message" : "Remove mileage and first_registration"};
+                    console.log(data);
+                } 
+                });
 
-            // }
-
-
+            }
 
         }
         else{
@@ -212,6 +210,24 @@ router.route("/update/:id")
         };
 
 
+    });
+
+
+
+// Remove by ID
+
+router.route("/remove/:id")
+    .get(function(req,res){
+        var response = {};
+        mongoOp.findByIdAndRemove(req.params.id,function(err,data){
+        // This will run Mongo Query to fetch data based on ID.
+            if(err) {
+                response = {"error" : true,"message" : err.message};
+            } else {
+                response = {"error" : false,"message" : "Removed the data"};
+            }
+            res.json(response);
+        });
     });
 
 
