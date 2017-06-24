@@ -5,7 +5,9 @@ var router      =   express.Router();
 var t           =   require("tcomb-validation")
 var validation  =   require("./domain")
 var Validator   =   require('jsonschema').Validator;
+var cors        =   require('cors')
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
 
