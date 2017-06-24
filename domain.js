@@ -21,5 +21,6 @@ var avertInput = t.struct({
 
 
 module.exports = {
- avertInput: avertInput
+ avertInput: avertInput,
+ fuel_type: fuel_type
 };

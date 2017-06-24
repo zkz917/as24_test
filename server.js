@@ -4,6 +4,7 @@ var bodyParser  =   require("body-parser");
 var router      =   express.Router();
 var t           =   require("tcomb-validation")
 var validation  =   require("./domain")
+var Validator   =   require('jsonschema').Validator;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
@@ -61,12 +62,29 @@ router.route("/addusers")
     .post(function(req,res){
         var db = new mongoOp();
         var response = {};
-        // Add strict validation when you use this in Production.
-        // var input = JSON.parse(req.body);
-        var input = req.body;
-        var result = t.validate(input, validation.avertInput);
 
-        if (result.isValid()) {
+        // validate the input fuel type
+
+        var input = req.body;
+        var v = new Validator();
+
+         var schema = {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string"},
+              "fuel": {"enum": ["gasoline","diesel"]},
+              "mileage": {"type": "integer", "minimum": 1},
+              "price": {"type": "integer", "minimum": 1},
+              "new":{"type":"boolean"},
+              "first_registration":{"type": "string", "format": "date"}
+
+            }
+          };
+
+        
+        var result = v.validate(input, schema).errors;
+
+        if (!result.length) {
 
                 db.title = req.body.title;
                 db.fuel  = req.body.fuel;
@@ -83,7 +101,7 @@ router.route("/addusers")
 
                 }
 
-
+                // mongoose save can automatically check the data type 
                 db.save(function(err){
                 // save() will run insert() command of MongoDB.
                 // it will add new data in collection.
@@ -96,7 +114,7 @@ router.route("/addusers")
                 });
             }else {
                 // in result.errors there are details on the validation failure
-                res.status(400).json(result.errors);
+                res.status(400).json(result);
             }
 
 
@@ -120,39 +138,80 @@ router.route("/users/:id")
         });
     });
 
+
+
 // Update by car advert by id
 
 router.route("/update/:id")
     .post(function(req,res){
+
         var response = {};
-        
-        var new_tile   = req.body.title;
-        // var new_fuel   = req.body.fuel;
-        // var new_price  = req.body.price;
-        // var new_new    = req.body.new;
-        // var new_mileage= req.body.mileage;
-        // var new_fr     = req.body.fr;
 
-        var new_obj    = {title : new_tile,
-                          // fuel  : new_fuel,
-                          // price : new_price,
-                          // new   : new_new,
-                          // mileage: new_mileage,
-                          // first_registration : new_fr
-                         };
+        var input = req.body;
+        var v = new Validator();
 
+         var schema = {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string"},
+              "fuel": {"enum": ["gasoline","diesel"]},
+              "mileage": {"type": "integer", "minimum": 1},
+              "price": {"type": "integer", "minimum": 1},
+              "new":{"type":"boolean"},
+              "first_registration":{"type": "string", "format": "date"}
 
-        
-        mongoOp.findByIdAndUpdate(req.params.id,req.body,function(err,data){
-        // Mongo command to fetch all data from collection.
-            if(err) {
-                response = {"error" : true,"message" : "Error fetching data"};
-            } else {
-                response = {"error" : false,"message" : "updated"};
-                console.log(data);
             }
-            res.json(response);
-        });
+          };
+
+
+        var result = v.validate(input, schema).errors;
+
+        if (!result.length) {
+
+            
+
+            mongoOp.findByIdAndUpdate(req.params.id,input,function(err,data){
+
+
+            // Mongo command to fetch all data from collection.
+            if(err) {
+                    response = {"error" : true, "message" : "wrong input"};
+                } else {
+                    response = {"error" : false,"message" : "updated"};
+                    console.log(data);
+                }
+                res.json(response);
+                 
+            });
+
+
+            // if (input.new){
+            //     mongoOp.findByIdAndUpdate(req.params.id,{$unset:{mileage:"",first_registration:""}},function(err,data){
+
+
+            //     // Mongo command to fetch all data from collection.
+            //     if(err) {
+            //         response = {"error" : true, "message" : "wrong input"};
+            //     } else {
+            //         response = {"error" : false,"message" : "Remove mileage and first_registration"};
+            //         console.log(data);
+            //     }
+            //     res.json(response);
+                 
+            //     });
+
+            // }
+
+
+
+        }
+        else{
+
+             res.status(400).json(result);
+
+        };
+
+
     });
 
 
