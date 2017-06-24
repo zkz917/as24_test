@@ -65,8 +65,18 @@ router.route("/addusers")
         db.fuel  = req.body.fuel;
         db.price = req.body.price;
         db.new   = req.body.new;
-        db.mileage = req.body.mileage;
-        db.first_registration = req.body.fr;
+
+        // only when the car is used then add mileage and Reg date to db.
+
+        if (!req.body.new){
+
+            db.mileage = req.body.mileage;
+
+            db.first_registration = req.body.fr;
+
+        }
+
+
 
 
 
