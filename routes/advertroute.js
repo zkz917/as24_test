@@ -1,4 +1,4 @@
-var express = require('express');
+ var express = require('express');
 var router = express.Router();
 var mongoOp     =   require("../models/mongo");
 var schema      =   require("../validationschema")
@@ -20,15 +20,32 @@ router.route("/users")
             if(err) {
                 response = {"error" : true,"message" : "Error fetching data"};
             } else {
-                response = {"error" : false,"message" : data};
-                console.log(data);
+                response = {"error" : false,"data" : data};
+            }
+            res.json(response);
+        });
+    });
+
+//  Return the list sort by option
+router.route("/users/:option")
+    .get(function(req,res){
+        var response = {};
+
+        let oneoption = req.params.option;
+        console.log(typeof(oneoption));
+        mongoOp.find({}).sort([[oneoption, -1]]).exec(function(err,data){
+        // Mongo command to fetch all data from collection.
+            if(err) {
+                response = {"error" : true,"message" : "Error fetching data"};
+            } else {
+                response = {"error" : false,"data" : data};
             }
             res.json(response);
         });
     });
 
 
-// add advert to db
+// Add advert to db
 
 router.route("/addusers")
     .post(function(req,res){
@@ -59,7 +76,6 @@ router.route("/addusers")
 
                 }
 
-                // mongoose save can automatically check the data type 
                 db.save(function(err,data){
                 // save() will run insert() command of MongoDB.
                 // it will add new data in collection.

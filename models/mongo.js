@@ -9,7 +9,6 @@ var userSchema  = { title: String,
                     new: Boolean,
                     mileage: Number,
                     first_registration: Date
-
                   };
 
 // create model if not exists.
