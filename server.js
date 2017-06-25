@@ -104,13 +104,13 @@ router.route("/addusers")
                 }
 
                 // mongoose save can automatically check the data type 
-                db.save(function(err){
+                db.save(function(err,data){
                 // save() will run insert() command of MongoDB.
                 // it will add new data in collection.
                     if(err) {
                         response = {"error" :  true, "message" : err.message };
                     } else {
-                        response = {"error" : false, "message" : "Data added"};
+                        response = {"error" : false, "message" : "Data added","data":data};
                     }
                     res.json(response);
                 });
