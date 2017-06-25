@@ -6,6 +6,7 @@ var t           =   require("tcomb-validation")
 var validation  =   require("./domain")
 var mongoOp     =   require("./models/mongo");
 var Validator   =   require('jsonschema').Validator;
+var schema      =   require("./validationschema")
 var cors        =   require('cors')
 
 app.use(cors());
@@ -50,20 +51,6 @@ router.route("/addusers")
 
         var input = req.body;
         var v = new Validator();
-
-         var schema = {
-            "type": "object",
-            "properties": {
-              "title": {"type": "string"},
-              "fuel": {"enum": ["gasoline","diesel"]},
-              "mileage": {"type": "integer", "minimum": 1},
-              "price": {"type": "integer", "minimum": 1},
-              "new":{"type":"boolean"},
-              "first_registration":{"type": "string", "format": "date"}
-
-            }
-          };
-
         
         var result = v.validate(input, schema).errors;
 
@@ -132,19 +119,6 @@ router.route("/update/:id")
 
         var input = req.body;
         var v = new Validator();
-
-         var schema = {
-            "type": "object",
-            "properties": {
-              "title": {"type": "string"},
-              "fuel": {"enum": ["gasoline","diesel"]},
-              "mileage": {"type": "integer", "minimum": 1},
-              "price": {"type": "integer", "minimum": 1},
-              "new":{"type":"boolean"},
-              "first_registration":{"type": "string", "format": "date"}
-
-            }
-          };
 
 
         var result = v.validate(input, schema).errors;
