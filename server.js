@@ -4,32 +4,13 @@ var bodyParser  =   require("body-parser");
 var router      =   express.Router();
 var t           =   require("tcomb-validation")
 var validation  =   require("./domain")
+var mongoOp     =   require("./models/mongo");
 var Validator   =   require('jsonschema').Validator;
 var cors        =   require('cors')
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
-
-
-var mongoose    =   require("mongoose");
-mongoose.connect('mongodb://localhost:27017/testapp');
-// create instance of Schema
-var mongoSchema =   mongoose.Schema;
-// create schema
-var userSchema  = { title: String,
-                    fuel: String,
-                    price: Number,
-                    new: Boolean,
-                    mileage: Number,
-                    first_registration: Date
-
-                  };
-
-// create model if not exists.
-var mongoOp = mongoose.model('userLogin',userSchema);
-
-
 
 
 router.get("/",function(req,res){
