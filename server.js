@@ -2,8 +2,6 @@ var express     =   require("express");
 var app         =   express();
 var bodyParser  =   require("body-parser");
 var router      =   express.Router();
-var t           =   require("tcomb-validation")
-var validation  =   require("./domain")
 var mongoOp     =   require("./models/mongo");
 var Validator   =   require('jsonschema').Validator;
 var schema      =   require("./validationschema")
@@ -83,7 +81,7 @@ router.route("/addusers")
                     res.json(response);
                 });
             }else {
-                // in result.errors there are details on the validation failure
+
                 res.status(400).json(result);
             }
 
