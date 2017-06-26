@@ -180,7 +180,8 @@ You can start the test by going to the as24_test folder.
 mocha
 ```
 advert test
-    ✓ get method should return a 200 response
+```sh
+    ✓ get method should return a 200 response<br>
     ✓ should add a new advert and return data and return a 200 response
     ✓ the fuel type can only be diesel or gasoline
     ✓ type should be string
@@ -196,7 +197,7 @@ advert test
     ✓ after the update the user info will be changed
     ✓ remove method should return a 200 response
     ✓ after the delete the record will not exist
-
+```
 
   16 passing (135ms)
 
