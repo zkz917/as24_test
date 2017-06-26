@@ -26,6 +26,7 @@ router.route("/users")
         });
     });
 
+
 //  Return the list sort by option
 router.route("/users/:option")
     .get(function(req,res){
@@ -96,7 +97,7 @@ router.route("/addusers")
 
 // Search by ID
 
-router.route("/users/:id")
+router.route("/getoneuser/:id")
     .get(function(req,res){
         var response = {};
         mongoOp.findById(req.params.id,function(err,data){
@@ -104,7 +105,7 @@ router.route("/users/:id")
             if(err) {
                 response = {"error" : true,"message" : err.message};
             } else {
-                response = {"error" : false,"message" : data};
+                response = {"error" : false,"data" : data};
             }
             res.json(response);
         });
@@ -157,7 +158,6 @@ router.route("/update/:id")
                     response = {"error" : true, "message" : "wrong input"};
                 } else {
                     response = {"error" : false,"message" : "Remove mileage and first_registration"};
-                    console.log(data);
                 } 
                 });
 
