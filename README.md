@@ -42,7 +42,7 @@ var schema = {
 ```sh
 localhost:3000/users/
 ```
-Use get method and get the following response:
+Use **get** method and get the following response:
 ```json
 {
     "error": false,
@@ -104,7 +104,7 @@ The response will be:
 }
 ```
 ### Add one record to database
-Use post method.
+Use **post** method.
 ```sh
 localhost:3000/addusers
 ```
@@ -137,7 +137,7 @@ The response can be:
 }
 ```
 ### Update one record by Id
-Use the put method.
+Use the **put** method.
 ```sh
 localhost:3000/update/594e793c4b3c2e8be326eff2
 ```
@@ -161,7 +161,7 @@ You can update any features of the existing adver by id. Here the id is: 594e793
 If you update the 'new' feature from 'flase' to 'true', the 'mileage' and 'first_resigstration' will be removed from the record.
 
 ### Remove one record by Id
-Use the delete method.
+Use the **delete** method.
 ```sh
 localhost:3000/remove/594dcea5f1d3827cc3f50a17
 ```
