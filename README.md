@@ -1,9 +1,9 @@
 # as24_advert_api
 
 ### Rest API based on Node.js
-I deploy the API in AWS EC2. <br>
+I deployed the API in AWS EC2. <br>
 You can test the following features through:  [ec2-34-201-31-41.compute-1.amazonaws.com:3000](http://ec2-34-201-31-41.compute-1.amazonaws.com:3000)<br>
-Or you can download the package:  <br>
+Or you can download the package:  [https://s3.amazonaws.com/insightkuangzheng/as24_test.zip](https://s3.amazonaws.com/insightkuangzheng/as24_test.zip)<br>
 Unzip and go to as24_test folder and start the service by:<br>
 ```sh
 node server.js
