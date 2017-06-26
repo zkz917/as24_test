@@ -4,11 +4,15 @@ var mongoOp     =   require("../models/mongo");
 var schema      =   require("../validationschema")
 var Validator   =   require('jsonschema').Validator;
 
+
+
 /* GET home page. */
 router.get('/', function(req, res) {
   res.json({"error" : false,"message" : "Hello World"});
 
 });
+
+
 
 router.route("/users")
     .get(function(req,res){
@@ -25,6 +29,7 @@ router.route("/users")
             res.json(response);
         });
     });
+
 
 
 //  Return the list sort by option
@@ -46,8 +51,8 @@ router.route("/users/:option")
     });
 
 
-// Add advert to db
 
+// Add advert to db
 router.route("/addusers")
     .post(function(req,res){
         var db = new mongoOp();
@@ -95,8 +100,8 @@ router.route("/addusers")
     });
 
 
-// Search by ID
 
+// Search by ID
 router.route("/getoneuser/:id")
     .get(function(req,res){
         var response = {};
@@ -113,8 +118,8 @@ router.route("/getoneuser/:id")
 
 
 
-// Update by car advert by id
 
+// Update by car advert by id
 router.route("/update/:id")
     .put(function(req,res){
 
@@ -130,19 +135,15 @@ router.route("/update/:id")
 
         if (!result.length) {
 
-            
-
             mongoOp.findByIdAndUpdate(req.params.id,input,function(err,data){
             mileage = data.mileage
             first_registration = data.first_registration
 
-
-            // Mongo command to fetch all data from collection.
             if(err) {
                     response = {"error" : true, "message" : "wrong input"};
                 } else {
                     response = {"error" : false,"message" : "updated"};
-                    console.log(data);
+
                 }
                 res.json(response);
                  
@@ -152,8 +153,6 @@ router.route("/update/:id")
             if (input.new && (mileage !== null) && (first_registration!== null)){
                 mongoOp.findByIdAndUpdate(req.params.id,{$unset:{mileage:"",first_registration:""}},function(err,data){
 
-
-                // Mongo command to fetch all data from collection.
                 if(err) {
                     response = {"error" : true, "message" : "wrong input"};
                 } else {
@@ -162,7 +161,6 @@ router.route("/update/:id")
                 });
 
             }
-
         }
         else{
 
@@ -181,7 +179,7 @@ router.route("/remove/:id")
     .delete(function(req,res){
         var response = {};
         mongoOp.findByIdAndRemove(req.params.id,function(err,data){
-        // This will run Mongo Query to fetch data based on ID.
+            
             if(err) {
                 response = {"error" : true,"message" : err.message};
             } else {
